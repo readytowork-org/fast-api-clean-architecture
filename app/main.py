@@ -32,11 +32,20 @@ class App:
             allow_headers=["*"],
         )
 
+    def add_health_check(self):
+        """Add health check"""
+        @self.app.get("/health-check", tags=["Health"])
+        def health_check():
+            return {"message": "API up and running"}
+
+
     def start_application(self) -> FastAPI:
         """Start application method."""
 
         get_routers(self.app)
         self.add_cors()
+        self.add_health_check()
+
         return self.app
 
 
